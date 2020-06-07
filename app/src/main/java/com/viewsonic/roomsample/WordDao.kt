@@ -1,13 +1,12 @@
 package com.viewsonic.roomsample
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 
+@Dao
 interface WordDao {
     @Query("SELECT * FROM word_table ORDER BY word ASC")
-    fun getAlphabetizedWords(): List<Word>
+    fun getAlphabetizedWords(): LiveData<List<Word>>
 //
 //    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
 //    fun loadAllByIds(userIds: IntArray): List<User>
@@ -16,7 +15,7 @@ interface WordDao {
 //    fun findByName(first: String, last: String): User
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertAll(word: Word)
+    suspend fun insert(word: Word)
 
     @Query("DELETE FROM word_table")
     suspend fun deleteAll()
